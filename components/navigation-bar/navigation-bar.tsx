@@ -56,7 +56,7 @@ export function NavigationBar({ items }: NavigationBarProps) {
     <header className="mega-navbar sticky top-0 z-50 mx-auto my-0 flex w-full flex-wrap content-center items-center justify-between border-b border-black/10 bg-white p-4 py-6">
       <div className="not-supports-[container-type]:md:mx-auto not-supports-[container-type]:md:w-full not-supports-[container-type]:md:max-w-container-md not-supports-[container-type]:md:px-0 flex justify-start px-4 supports-[container-type]:@3xl:mx-auto supports-[container-type]:@3xl:w-full supports-[container-type]:@3xl:max-w-container-md supports-[container-type]:@3xl:px-0">
         <Link prefetch={false} href="/" className="brand not-supports-[container-type]:md:flex mr-20 hidden items-center text-xl font-bold supports-[container-type]:@3xl:flex">
-          Acme
+          Traffic Order's
         </Link>
 
         <section className="navbar__left not-supports-[container-type]:md:hidden flex w-full justify-between supports-[container-type]:@3xl:hidden">
@@ -66,7 +66,7 @@ export function NavigationBar({ items }: NavigationBarProps) {
             <span className="burger-line"></span>
           </button>
           <Link prefetch={false} href="/" className="brand flex items-center text-xl font-bold">
-            Acme
+            Traffic Order's
           </Link>
           <div className="menu-actions absolute right-4 flex items-center justify-center gap-2">
             <Favorites className="not-supports-[container-type]:md:hidden flex supports-[container-type]:@3xl:hidden" />
