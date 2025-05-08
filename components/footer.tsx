@@ -80,7 +80,7 @@ export function Footer() {
                 <LinkedinIcon className="size-6" />
               </a>
             </div>
-            <div className="text-sm">© {new Date().getFullYear()} Traffic Order's Commerce.</div>
+            <div className="text-sm">© {new Date().getFullYear()} Traffic Orders Commerce.</div>
           </div>
           <div className="mt-8 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
             <Link
