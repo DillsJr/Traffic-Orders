@@ -21,3 +21,4 @@ graph.svg
 # testing
 coverage
 .vercel
+node_modules/
