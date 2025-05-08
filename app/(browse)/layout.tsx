@@ -9,7 +9,7 @@ import { ThirdParties } from "components/third-parties"
 import { env } from "env.mjs"
 import { Metadata } from "next"
 import { GithubBadge } from "components/github-badge"
-import { DemoModeAlert } from "components/demo-mode-alert"
+// import { DemoModeAlert } from "components/demo-mode-alert"
 import { CartView } from "components/cart/cart-view"
 import { NavigationBar } from "components/navigation-bar/navigation-bar"
 import { mobileInlineScript } from "components/navigation-bar/mobile-inline-script"
@@ -71,7 +71,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ThirdParties />
 
           <GithubBadge />
-          <DemoModeAlert />
+          {/* <DemoModeAlert /> */}
         </NuqsAdapter>
       </body>
     </html>

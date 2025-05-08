@@ -6,7 +6,7 @@ import { Suspense } from "react"
 import { Toaster } from "sonner"
 import { FlagValues } from "components/flag-values"
 import { ThirdParties } from "components/third-parties"
-import { DemoModeAlert } from "components/demo-mode-alert"
+// import { DemoModeAlert } from "components/demo-mode-alert"
 import { CartView } from "components/cart/cart-view"
 import { NavigationBar } from "components/navigation-bar/navigation-bar"
 import { mobileInlineScript } from "components/navigation-bar/mobile-inline-script"
@@ -50,7 +50,7 @@ export default function AiSearchLayout({ children }: { children: React.ReactNode
                   <FlagValues />
                 </Suspense>
                 <ThirdParties />
-                <DemoModeAlert />
+                {/* <DemoModeAlert /> */}
               </div>
               <FloatingChatBox />
             </SidebarProvider>{" "}
