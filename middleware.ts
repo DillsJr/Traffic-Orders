@@ -1,4 +1,3 @@
-import { ScalableBloomFilter } from "bloom-filters"
 import { NextRequest, NextResponse } from "next/server"
 import { getBucket } from "utils/ab-testing"
 import { BUCKETS, facetParams } from "constants/index"
