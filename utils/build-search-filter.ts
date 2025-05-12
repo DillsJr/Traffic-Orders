@@ -4,25 +4,8 @@ import type { PlatformCollection } from "lib/shopify/types"
 
 type SearchParams = Omit<Awaited<ReturnType<typeof searchParamsCache.parse>>, "page" | "sortBy" | "q">
 
-function validateFilters(params: SearchParams): boolean {
-  const { minPrice, maxPrice, rating } = params;
-  if (minPrice && maxPrice && minPrice > maxPrice) {
-    console.warn("Invalid price range: minPrice cannot be greater than maxPrice.");
-    return false;
-  }
-  if (rating && (rating < 0 || rating > 5)) {
-    console.warn("Invalid rating: Rating must be between 0 and 5.");
-    return false;
-  }
-  return true;
-}
-
 export function buildSearchFilter({ collection, params, separator }: { collection?: PlatformCollection | undefined; params: SearchParams; separator: string }): string {
   const filter = new FilterBuilder()
-
-  if (!validateFilters(params)) {
-    throw new Error("Invalid filters provided");
-  }
 
   if (collection) {
     filter.where("collections.handle", collection.handle)
@@ -75,4 +58,3 @@ function addRatingFilter(filter: FilterBuilder, rating: number | null): void {
     filter.numeric("avgRating", rating, ComparisonOperators.GreaterThanOrEqual)
   }
 }
-
