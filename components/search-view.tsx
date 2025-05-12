@@ -39,23 +39,18 @@ export const searchParamsCache = createSearchParamsCache({
 })
 
 function makePageTitle(collection: PlatformCollection | undefined, query: string) {
-  if (collection) {
+  if (!!collection) {
     return `${collection.title}`
   }
 
-  if (query.length > 0) {
-    return `Results for "${query}"`
+  if (!!query.length) {
+    return `${query}`
   }
 
   return "Search"
 }
 
-export async function SearchView({
-  searchParams,
-  disabledFacets = [],
-  collection,
-  basePath = "",
-}: SearchViewProps) {
+export async function SearchView({ searchParams, disabledFacets, collection, basePath }: SearchViewProps) {
   const { q, sortBy, page, ...rest } = searchParamsCache.parse(searchParams)
 
   const filter = buildSearchFilter({
@@ -64,21 +59,11 @@ export async function SearchView({
     separator: HIERARCHICAL_SEPARATOR,
   })
 
-  const {
-    facetDistribution = {} as Record<string, Record<string, number>>,
-    hits = [],
-    totalPages = 1,
-    totalHits = 0,
-    independentFacetDistribution = {} as Record<string, Record<string, number>>,
-  } = await getFilteredProducts(q, sortBy, page, filter)
+  const { facetDistribution, hits, totalPages, totalHits, independentFacetDistribution } = await getFilteredProducts(q, sortBy, page, filter)
 
   return (
     <div className="mx-auto w-full md:max-w-container-md">
-      <ContextReporter
-        products={hits}
-        categories={collection ? [collection] : []}
-        availableFilters={facetDistribution}
-      />
+      <ContextReporter products={hits} categories={collection ? [collection] : []} availableFilters={facetDistribution} />
       <div className="sticky top-[77px] z-40 flex items-center justify-between bg-white/80 p-4 backdrop-blur-lg lg:hidden">
         <div className="flex gap-1 text-2xl font-semibold tracking-tight lg:text-3xl">
           <h1 className="flex-1">{makePageTitle(collection, q)}</h1>
@@ -86,9 +71,9 @@ export async function SearchView({
         </div>
         <div className="flex items-center gap-1 lg:hidden">
           <FacetsMobile
-            disabledFacets={disabledFacets ?? []}
-            independentFacetDistribution={independentFacetDistribution}
-            facetDistribution={facetDistribution}
+            disabledFacets={disabledFacets}
+            independentFacetDistribution={independentFacetDistribution as Record<string, Record<string, number>>}
+            facetDistribution={facetDistribution as Record<string, Record<string, number>>}
           />
         </div>
       </div>
@@ -101,10 +86,10 @@ export async function SearchView({
 
           <Suspense>
             <FacetsDesktop
-              independentFacetDistribution={independentFacetDistribution}
+              independentFacetDistribution={independentFacetDistribution as Record<string, Record<string, number>>}
               disabledFacets={disabledFacets}
               className="hidden max-h-[70dvh] shrink-0 basis-[192px] overflow-y-auto lg:block"
-              facetDistribution={facetDistribution}
+              facetDistribution={facetDistribution as Record<string, Record<string, number>>}
             />
           </Suspense>
         </div>
@@ -115,11 +100,7 @@ export async function SearchView({
             </Suspense>
           </div>
           <HitsSection hits={hits} basePath={basePath} />
-          <PaginationSection
-            queryParams={searchParams}
-            totalPages={totalPages}
-            currentPage={page || 1} // Ensure a valid fallback value
-          />
+          <PaginationSection queryParams={searchParams} totalPages={totalPages} />
         </div>
       </div>
     </div>
