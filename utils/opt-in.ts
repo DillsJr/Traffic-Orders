@@ -33,3 +33,15 @@ export const notifyOptIn = ({ feature, source }: { feature: Feature; source?: st
 
   return "This feature is not enabled, to enable set required keys"
 }
+
+function validateEnvVariables() {
+  const requiredVars = ['JUDGE_API_TOKEN', 'OPENAI_API_KEY', 'REPLICATE_API_KEY'];
+  for (const variable of requiredVars) {
+    if (!process.env[variable]) {
+      console.warn(`Environment variable ${variable} is missing or not set`);
+    }
+  }
+}
+
+// Call validation function at initialization
+validateEnvVariables();

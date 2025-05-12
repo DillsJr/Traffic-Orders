@@ -129,11 +129,17 @@ async function getHierarchicalCollections(client: StorefrontApiClient, handle: s
   }
 }
 
-async function getProduct(client: StorefrontApiClient, id: string): Promise<PlatformProduct | null> {
-  const response = await client.request<SingleProductQuery>(getProductQuery, { variables: { id: makeShopifyId(id, "Product") } })
-  const product = response.data?.product
-
-  return normalizeProduct(product)
+export async function getProduct(client: StorefrontApiClient, id: string): Promise<PlatformProduct | null> {
+  console.info(`Fetching product with ID: ${id}`);
+  try {
+    const response = await client.request<SingleProductQuery>(getProductQuery, {
+      variables: { id: makeShopifyId(id, "Product") },
+    });
+    return normalizeProduct(response.data?.product);
+  } catch (error) {
+    console.error(`Error fetching product with ID: ${id}`, error);
+    return null;
+  }
 }
 
 async function getProductByHandle(client: StorefrontApiClient, handle: string) {

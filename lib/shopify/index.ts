@@ -3,15 +3,29 @@ import { storefrontClient } from "./client"
 import type { PlatformItemInput } from "./types"
 import { TAGS } from "constants/index"
 
-export const getPage = unstable_cache(async (handle: string) => await storefrontClient.getPage(handle), ["page"], { revalidate: 86400 })
-
-export const getProduct = unstable_cache(async (id: string) => await storefrontClient.getProduct(id), ["product"], { revalidate: 86400 })
-
 export const getProductByHandle = unstable_cache(async (handle: string) => await storefrontClient.getProductByHandle(handle), ["product"], { revalidate: 86400 })
 
 export const getAdminProduct = async (id: string) => await storefrontClient.getAdminProduct(id)
 
 export const getAllPages = unstable_cache(async () => await storefrontClient.getAllPages(), ["page"], { revalidate: 86400 })
+
+export const getPage = unstable_cache(async (handle: string) => {
+  try {
+    return await storefrontClient.getPage(handle);
+  } catch (error) {
+    console.error(`Error fetching page: ${handle}`, error);
+    throw new Error('Failed to fetch page data');
+  }
+}, ["page"], { revalidate: 86400 });
+
+export const getProduct = unstable_cache(async (id: string) => {
+  try {
+    return await storefrontClient.getProduct(id);
+  } catch (error) {
+    console.error(`Error fetching product: ${id}`, error);
+    throw new Error('Failed to fetch product data');
+  }
+}, ["product"], { revalidate: 3600 }); // Reduced revalidate time for frequently changing data
 
 export const getCart = unstable_cache(async (cartId: string) => await storefrontClient.getCart(cartId), [TAGS.CART], {
   revalidate: 900,

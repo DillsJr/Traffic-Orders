@@ -45,20 +45,15 @@ export function getDemoProductReviews() {
 }
 
 export function isDemoMode(): boolean {
-  return (
-    isDemoValue(process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN) ||
-    isDemoValue(process.env.SHOPIFY_ADMIN_ACCESS_TOKEN) ||
-    isDemoValue(process.env.SHOPIFY_APP_API_SECRET_KEY) ||
-    isDemoValue(process.env.SHOPIFY_STORE_DOMAIN) ||
-    isDemoValue(process.env.ALGOLIA_APP_ID) ||
-    isDemoValue(process.env.ALGOLIA_WRITE_API_KEY) ||
-    isDemoValue(process.env.ALGOLIA_PRODUCTS_INDEX) ||
-    isDemoValue(process.env.ALGOLIA_CATEGORIES_INDEX) ||
-    !process.env.LIVE_URL ||
-    process.env.IS_DEMO_MODE === "true"
-  )
+  const demoEnvVars = [
+    process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+    process.env.SHOPIFY_ADMIN_ACCESS_TOKEN,
+    process.env.SHOPIFY_APP_API_SECRET_KEY,
+  ];
+
+  return demoEnvVars.some(isDemoValue) || process.env.IS_DEMO_MODE === "true";
 }
 
 function isDemoValue(value: string | undefined) {
-  return !value || value === "demo"
+  return !value || value === "demo";
 }
