@@ -22,3 +22,5 @@ graph.svg
 coverage
 .vercel
 node_modules/
+
+.env.local
