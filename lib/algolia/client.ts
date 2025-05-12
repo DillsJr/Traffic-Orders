@@ -20,11 +20,18 @@ const algoliaClient = (args: { applicationId: string; apiKey: string }) => {
 }
 
 export const algolia = (args: { applicationId: string; apiKey: string }) => {
-  const client = algoliaClient(args)
+  const client = algoliaClient(args);
   const recommendationClient = client.initRecommend()
 
   return {
-    search: async <T extends Record<string, any>>(args: SearchSingleIndexProps) => search<T>(args, client),
+    search: async <T extends Record<string, any>>(args: SearchSingleIndexProps) => {
+      try {
+        return await client.searchSingleIndex<T>(args);
+      } catch (error) {
+        console.error("Error during search:", error);
+        throw new Error("Search operation failed. Please try again.");
+      }
+    },
     getAllResults: async <T extends Record<string, any>>(args: BrowseProps) => getAllResults<T>(client, args),
     update: async (args: PartialUpdateObjectsOptions) => updateObjects(args, client),
     batchUpdate: async (args: BatchProps) => batchUpdate(args, client),

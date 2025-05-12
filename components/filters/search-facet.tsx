@@ -15,11 +15,10 @@ export function SearchFacet({ className }: { className?: string }) {
   const debouncedQuery = useDebounce(localQuery, 500)
 
   useEffect(() => {
-    if (!debouncedQuery) return
-
-    setPage(1)
-    setQuery(debouncedQuery)
-  }, [debouncedQuery, setPage, setQuery])
+    if (debouncedQuery) {
+      setQuery(debouncedQuery);
+    }
+  }, [debouncedQuery, setQuery]);
 
   return (
     <div className={cn("relative flex items-center justify-center", className)}>
@@ -28,9 +27,7 @@ export function SearchFacet({ className }: { className?: string }) {
         placeholder="Search..."
         type="text"
         value={localQuery || ""}
-        onChange={(event) => {
-          setLocalQuery(event.target.value)
-        }}
+        onChange={(e) => setLocalQuery(e.target.value)}
       />
       {!!localQuery && (
         <Button

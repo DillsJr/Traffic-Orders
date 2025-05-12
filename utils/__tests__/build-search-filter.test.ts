@@ -87,6 +87,19 @@ describe("buildSearchFilter", () => {
     expect(result).toBe("minPrice >= 10 AND minPrice <= 100")
   })
 
+  it("should throw an error for invalid price range", () => {
+    const params = { ...defaultParams, minPrice: 100, maxPrice: 50, rating: null };
+    expect(() => buildSearchFilter({ params, separator: " > " })).toThrow("Invalid filters provided");
+  });
+
+  it("should handle valid filters correctly", () => {
+    const params = { ...defaultParams, minPrice: 50, maxPrice: 100, rating: 4 };
+    const result = buildSearchFilter({ params, separator: " > " });
+    expect(result).toContain("minPrice >= 50");
+    expect(result).toContain("minPrice <= 100");
+    expect(result).toContain("avgRating >= 4");
+  });
+
   it("should filter by minimum price only", () => {
     const params = {
       ...defaultParams,
