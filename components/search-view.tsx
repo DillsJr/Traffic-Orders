@@ -1,29 +1,29 @@
-import { Suspense } from "react"
-import { createSearchParamsCache, parseAsArrayOf, parseAsInteger, parseAsString } from "nuqs/server"
+import { Suspense } from "react";
+import { createSearchParamsCache, parseAsArrayOf, parseAsInteger, parseAsString } from "nuqs/server";
 
-import type { PlatformCollection } from "lib/shopify/types"
-import { getFilteredProducts } from "lib/algolia"
+import type { PlatformCollection } from "lib/shopify/types";
+import { getFilteredProducts } from "lib/algolia";
 
-import { buildSearchFilter } from "utils/build-search-filter"
+import { buildSearchFilter } from "utils/build-search-filter";
 
-import { FacetsDesktop } from "components/filters/facets-desktop"
-import { HitsSection } from "components/filters/hits-section"
-import { PaginationSection } from "components/filters/pagination-section"
-import { FacetsMobile } from "components/filters/facets-mobile"
+import { FacetsDesktop } from "components/filters/facets-desktop";
+import { HitsSection } from "components/filters/hits-section";
+import { PaginationSection } from "components/filters/pagination-section";
+import { FacetsMobile } from "components/filters/facets-mobile";
 
-import { SearchParamsType } from "types"
+import { SearchParamsType } from "types";
 
-import { HIERARCHICAL_SEPARATOR } from "constants/index"
-import { cn } from "utils/cn"
-import { Sorter } from "./filters/sorter"
-import { ContextReporter } from "app/(ai-browse)/_components/context-reporter"
+import { HIERARCHICAL_SEPARATOR } from "constants/index";
+import { cn } from "utils/cn";
+import { Sorter } from "./filters/sorter";
+import { ContextReporter } from "app/(ai-browse)/_components/context-reporter";
 
 interface SearchViewProps {
-  searchParams: SearchParamsType
-  params?: { slug: string; page?: string }
-  collection?: PlatformCollection
-  disabledFacets?: string[]
-  basePath?: string
+  searchParams: SearchParamsType;
+  params?: { slug: string; page?: string };
+  collection?: PlatformCollection;
+  disabledFacets?: string[];
+  basePath?: string;
 }
 
 export const searchParamsCache = createSearchParamsCache({
@@ -36,30 +36,35 @@ export const searchParamsCache = createSearchParamsCache({
   vendors: parseAsArrayOf(parseAsString).withDefault([]),
   colors: parseAsArrayOf(parseAsString).withDefault([]),
   rating: parseAsInteger,
-})
+});
 
 function makePageTitle(collection: PlatformCollection | undefined, query: string) {
   if (!!collection) {
-    return `${collection.title}`
+    return `${collection.title}`;
   }
 
   if (!!query.length) {
-    return `${query}`
+    return `${query}`;
   }
 
-  return "Search"
+  return "Search";
 }
 
 export async function SearchView({ searchParams, disabledFacets, collection, basePath }: SearchViewProps) {
-  const { q, sortBy, page, ...rest } = searchParamsCache.parse(searchParams)
+  const { q, sortBy, page, ...rest } = searchParamsCache.parse(searchParams);
 
   const filter = buildSearchFilter({
     collection,
     params: rest,
     separator: HIERARCHICAL_SEPARATOR,
-  })
+  });
 
-  const { facetDistribution, hits, totalPages, totalHits, independentFacetDistribution } = await getFilteredProducts(q, sortBy, page, filter)
+  const { facetDistribution, hits, totalPages, totalHits, independentFacetDistribution } = await getFilteredProducts(
+    q,
+    sortBy,
+    page,
+    filter
+  );
 
   return (
     <div className="mx-auto w-full md:max-w-container-md">
@@ -104,5 +109,5 @@ export async function SearchView({ searchParams, disabledFacets, collection, bas
         </div>
       </div>
     </div>
-  )
+  );
 }
